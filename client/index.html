@@ -1,13 +1,285 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>client</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Connect Portal | Home</title>
+
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+
+<body>
+
+    <!-- Top Navigation Header -->
+    <header class="navbar">
+
+        <div class="logo-group">
+
+            <div class="brand-badge">
+                RV
+            </div>
+
+            <div>
+                <span class="university-name">
+                    RV UNIVERSITY<sup>®</sup>
+                </span>
+
+                <p class="sub-dept">
+                    School of Computer Science & Engineering
+                </p>
+            </div>
+
+        </div>
+
+        <div class="nav-actions">
+            <a href="#login" class="btn-secondary">
+                Login
+            </a>
+
+            <a href="#register" class="btn-primary">
+                Register
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+
+        <div class="hero-content">
+
+            <span class="module-tag">
+                CS3301 - FULL STACK DEVELOPMENT
+            </span>
+
+            <h1>
+                CAMPUS CONNECT PORTAL
+            </h1>
+
+            <p class="subtitle">
+                Connecting Students, Faculty, and Administrators on a Single Digital Platform.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="#roles" class="btn-hero-primary">
+                    Explore User Portals ➔
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Campus Life & Portal Highlights -->
+    <section class="section-container">
+
+        <h2 class="section-title">
+            Campus Life & Portal Highlights
+        </h2>
+
+        <p class="section-subtitle">
+            Experience academic management simplified through modern technology.
+        </p>
+
+
+        <div class="carousel-wrapper">
+
+            <button
+                class="carousel-btn prev-btn"
+                id="prevBtn"
+                aria-label="Previous slide">
+                &#10094;
+            </button>
+
+
+            <div class="carousel-track-container">
+
+                <div class="carousel-track" id="carouselTrack">
+
+                    <!-- Slide 1 -->
+                    <div class="slide active-slide">
+
+                        <img
+                            src="./src/assets/slide1.jpg"
+                            alt="University Campus">
+
+                        <div class="slide-caption">
+                            Modern University Infrastructure
+                        </div>
+
+                    </div>
+
+
+                    <!-- Slide 2 -->
+                    <div class="slide">
+
+                        <img
+                            src="./src/assets/slide2.jpg"
+                            alt="Student Collaboration">
+
+                        <div class="slide-caption">
+                            Collaborative Learning & Hackathons
+                        </div>
+
+                    </div>
+
+
+                    <!-- Slide 3 -->
+                    <div class="slide">
+
+                        <img
+                            src="./src/assets/slide3.jpg"
+                            alt="Digital Dashboard">
+
+                        <div class="slide-caption">
+                            Real-Time Academic Management
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="carousel-btn next-btn"
+                id="nextBtn"
+                aria-label="Next slide">
+                &#10095;
+            </button>
+
+        </div>
+
+
+        <!-- Slide Indicators -->
+        <div class="carousel-dots" id="carouselDots">
+
+            <span
+                class="dot active-dot"
+                data-index="0">
+            </span>
+
+            <span
+                class="dot"
+                data-index="1">
+            </span>
+
+            <span
+                class="dot"
+                data-index="2">
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- User Role Section -->
+    <section id="roles" class="section-container bg-light">
+
+        <h2 class="section-title">
+            Choose Your Portal View
+        </h2>
+
+
+        <div class="roles-grid">
+
+
+            <!-- Student Card -->
+            <article class="role-card student-border">
+
+                <div class="role-icon">
+                    👨‍🎓
+                </div>
+
+                <h3>
+                    Student Portal
+                </h3>
+
+                <ul class="feature-bullets">
+
+                    <li>• View Notices & Events</li>
+                    <li>• Submit Assignments</li>
+                    <li>• Track Attendance</li>
+                    <li>• Update Profile</li>
+
+                </ul>
+
+                <button class="btn-portal student-bg">
+                    Access Student View
+                </button>
+
+            </article>
+
+
+            <!-- Faculty Card -->
+            <article class="role-card faculty-border">
+
+                <div class="role-icon">
+                    👨‍🏫
+                </div>
+
+                <h3>
+                    Faculty Portal
+                </h3>
+
+                <ul class="feature-bullets">
+
+                    <li>• Post Notices & Events</li>
+                    <li>• Create Assignments</li>
+                    <li>• Mark Attendance</li>
+                    <li>• View Submissions</li>
+
+                </ul>
+
+                <button class="btn-portal faculty-bg">
+                    Access Faculty View
+                </button>
+
+            </article>
+
+
+            <!-- Admin Card -->
+            <article class="role-card admin-border">
+
+                <div class="role-icon">
+                    🛡️
+                </div>
+
+                <h3>
+                    Admin Portal
+                </h3>
+
+                <ul class="feature-bullets">
+
+                    <li>• Manage Users</li>
+                    <li>• Manage Notices & Events</li>
+                    <li>• View System Reports</li>
+                    <li>• System Settings</li>
+
+                </ul>
+
+                <button class="btn-portal admin-bg">
+                    Access Admin View
+                </button>
+
+            </article>
+
+
+        </div>
+
+    </section>
+  <section id=""auth-section">
+      <div id="auth-root"></div></div>
+    </section>
+
+    
+    <script type="module" src="./src/main.jsx"></script>
+
+</body>
+
 </html>
