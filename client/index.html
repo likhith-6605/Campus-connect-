@@ -33,11 +33,11 @@
         </div>
 
         <div class="nav-actions">
-            <a href="#login" class="btn-secondary">
+            <a href="/login" class="btn-secondary">
                 Login
             </a>
 
-            <a href="#register" class="btn-primary">
+            <a href="/register" class="btn-primary">
                 Register
             </a>
         </div>
@@ -209,9 +209,12 @@
 
                 </ul>
 
-                <button class="btn-portal student-bg">
+                <a
+                    href="/student"
+                    class="btn-portal student-bg"
+                    style="display: inline-block; text-align: center; text-decoration: none;">
                     Access Student View
-                </button>
+                </a>
 
             </article>
 
@@ -273,11 +276,13 @@
         </div>
 
     </section>
-  <section id="auth-section">
-      <div id="auth-root"></div></div>
+
+
+    <section id="auth-section">
+        <div id="auth-root"></div>
     </section>
 
-    
+
     <script type="module" src="./src/main.jsx"></script>
 
 </body>

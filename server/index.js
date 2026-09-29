@@ -1,0 +1,67 @@
+import express from "express";
+import cors from "cors";
+
+const app = express();
+const PORT = 5000;
+
+app.use(express.json());
+app.use(cors());
+
+let assignments = [
+    {
+        id: 1,
+        subject: "CS3301 - Full Stack",
+        title: "Lab 2: React Routing",
+        status: "Pending"
+    },
+    {
+        id: 2,
+        subject: "CS3302 - DBMS",
+        title: "ER Diagram Project Report",
+        status: "Submitted"
+    }
+];
+
+// Create new assignment
+app.post("/api/assignments", (req, res) => {
+
+    const newAssignment = {
+        id: assignments.length + 1,
+        subject: req.body.subject,
+        title: req.body.title,
+        status: "Pending"
+    };
+
+    assignments.push(newAssignment);
+
+    res.status(201).json(newAssignment);
+});
+
+// Get all assignments
+app.get("/api/assignments", (req, res) => {
+    res.json(assignments);
+});
+
+// Submit an assignment
+app.put("/api/assignments/:id/submit", (req, res) => {
+
+    const id = parseInt(req.params.id);
+
+    const assignment = assignments.find(
+        (a) => a.id === id
+    );
+
+    if (!assignment) {
+        return res.status(404).json({
+            message: "Assignment not found"
+        });
+    }
+
+    assignment.status = "Submitted";
+
+    res.json(assignment);
+});
+
+app.listen(PORT, () => {
+    console.log(`Node.js server running on http://localhost:${PORT}`);
+});
