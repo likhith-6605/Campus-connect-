@@ -4,13 +4,14 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
     "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^4.22.3"
+    "express": "^4.22.3",
+    "mongoose": "^9.11.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

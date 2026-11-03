@@ -1,150 +1,114 @@
 import express from 'express';
 import cors from 'cors';
-
-import {
-  errorHandler,
-  ApiError,
-  asyncHandler
-} from './src/middlewares/index.js';
+import mongoose from 'mongoose';
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-app.use((req, res, next) => {
-  console.log(`[REQUEST] ${req.method} ${req.url}`);
-  next();
+// MongoDB connection
+const MONGO_URI =
+  process.env.MONGO_URI ||
+  'mongodb://127.0.0.1:27017/campus_connect';
+
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ Connected to MongoDB successfully!'))
+  .catch((err) =>
+    console.error('❌ MongoDB Connection Error:', err)
+  );
+
+// Assignment Schema
+const assignmentSchema = new mongoose.Schema({
+  subject: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String,
+    default: 'Pending'
+  }
 });
 
-let assignments = [
-  {
-    id: 1,
-    subject: 'CS3301 - Full Stack',
-    title: 'Lab 2: React Router',
-    dueDate: '2026-10-05',
-    status: 'Pending'
-  },
-  {
-    id: 2,
-    subject: 'CS3302 - DBMS',
-    title: 'ER Diagram Project Report',
-    dueDate: '2026-10-08',
-    status: 'Pending'
-  },
-  {
-    id: 3,
-    subject: 'CS2225 - Data Science',
-    title: 'Data Analysis Assignment',
-    dueDate: '2026-10-10',
-    status: 'Completed'
-  }
-];
+const Assignment = mongoose.model(
+  'Assignment',
+  assignmentSchema
+);
 
-app.get(
-  '/api/assignments',
-  asyncHandler(async (req, res) => {
+// GET: Fetch all assignments
+app.get('/api/assignments', async (req, res) => {
+  try {
+    const assignments = await Assignment.find();
     res.json(assignments);
-  })
-);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-app.get(
-  '/api/assignments/:id',
-  asyncHandler(async (req, res) => {
-    const id = Number(req.params.id);
-
-    const assignment = assignments.find(
-      (item) => item.id === id
-    );
-
-    if (!assignment) {
-      throw new ApiError(404, 'Assignment not found');
-    }
-
-    res.json(assignment);
-  })
-);
-
-app.post(
-  '/api/assignments',
-  asyncHandler(async (req, res) => {
-    const {
-      subject,
-      title,
-      dueDate,
-      status
-    } = req.body;
+// POST: Create a new assignment
+app.post('/api/assignments', async (req, res) => {
+  try {
+    const { subject, title } = req.body;
 
     if (!subject || !title) {
-      throw new ApiError(
-        400,
-        'Subject and title are required'
-      );
+      return res.status(400).json({
+        message: 'Subject and title are required'
+      });
     }
 
-    const newAssignment = {
-      id: assignments.length + 1,
+    const newAssignment = await Assignment.create({
       subject,
       title,
-      dueDate: dueDate || null,
-      status: status || 'Pending',
-      createdAt: new Date().toISOString()
-    };
-
-    assignments.push(newAssignment);
-
-    res.status(201).json({
-      success: true,
-      message: 'Assignment created successfully',
-      assignment: newAssignment
+      status: 'Pending'
     });
-  })
-);
 
-app.put(
-  '/api/assignments/:id/submit',
-  asyncHandler(async (req, res) => {
-    const id = Number(req.params.id);
+    res.status(201).json(newAssignment);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
-    const assignment = assignments.find(
-      (item) => item.id === id
-    );
+// PUT: Submit an assignment
+app.put('/api/assignments/:id/submit', async (req, res) => {
+  try {
+    const { id } = req.params;
 
-    if (!assignment) {
-      throw new ApiError(404, 'Assignment not found');
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        message: 'Invalid assignment ID'
+      });
     }
 
-    assignment.status = 'Submitted';
+    const updatedAssignment =
+      await Assignment.findByIdAndUpdate(
+        id,
+        { status: 'Submitted' },
+        { new: true, runValidators: true }
+      );
 
-    res.json({
-      success: true,
-      message: 'Assignment submitted successfully',
-      assignment
-    });
-  })
-);
+    if (!updatedAssignment) {
+      return res.status(404).json({
+        message: 'Assignment not found'
+      });
+    }
 
-app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Campus Connect Portal API is running!'
+    res.json(updatedAssignment);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Start server after MongoDB connects
+mongoose.connection.once('open', () => {
+  app.listen(PORT, () => {
+    console.log(
+      `🚀 Server running on http://localhost:${PORT}`
+    );
   });
-});
-
-app.use((req, res, next) => {
-  next(
-    new ApiError(
-      404,
-      `Route not found: ${req.originalUrl}`
-    )
-  );
-});
-
-app.use(errorHandler);
-
-app.listen(PORT, () => {
-  console.log(
-    `🚀 Server running on http://localhost:${PORT}`
-  );
 });
